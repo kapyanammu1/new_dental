@@ -1,0 +1,55 @@
+.appointment-card {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.patient-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.appointment-info {
+    flex-grow: 1;
+}
+
+.patient-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.appointment-date,
+.appointment-time,
+.appointment-notes {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.appointment-info i {
+    margin-right: 10px;
+    color: #6c757d;
+}
+
+.appointment-icon {
+    margin-right: 20px;
+    color: #6c757d;
+}
+
+.appointment-treatments {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.appointment-treatments i {
+    margin-right: 10px;
+    color: #6c757d;
+}

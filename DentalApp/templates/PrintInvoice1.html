@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+	<!--begin::Toolbar container-->
+	<div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+		<!--begin::Page title-->
+		<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+			<!--begin::Title-->
+			<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Invoice 2</h1>
+			<!--end::Title-->
+			<!--begin::Breadcrumb-->
+			<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+				<!--begin::Item-->
+				<li class="breadcrumb-item text-muted">
+					<a href="{% url 'index' %}" class="text-muted text-hover-primary">Home</a>
+				</li>
+				<!--end::Item-->
+				<!--begin::Item-->
+				<li class="breadcrumb-item">
+					<span class="bullet bg-gray-500 w-5px h-2px"></span>
+				</li>
+				<!--end::Item-->
+				<!--begin::Item-->
+				<!--end::Item-->
+				<!--begin::Item-->
+				<li class="breadcrumb-item text-muted">View Invoice</li>
+				<!--end::Item-->
+			</ul>
+			<!--end::Breadcrumb-->
+		</div>
+		<!--end::Page title-->
+	</div>
+	<!--end::Toolbar container-->
+</div>
+<!--end::Toolbar-->
+<!--begin::Content-->
+<div id="kt_app_content" class="app-content flex-column-fluid">
+	<!--begin::Content container-->
+	<div id="kt_app_content_container" class="app-container container-xxl">
+		<!-- begin::Invoice 1-->
+		<div class="card">
+			<!-- begin::Body-->
+			<div class="card-body py-20">
+				<!-- begin::Wrapper-->
+				<div class="mw-lg-950px mx-auto w-100">
+					<!-- begin::Header-->
+					<div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
+						<h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">INVOICE</h4>
+						<!--end::Logo-->
+						<div class="text-sm-end">
+							<!--begin::Logo-->
+							<a href="#">
+								<img alt="Logo" src="{% static 'assets/media/svg/brand-logos/duolingo.svg' %}" />
+							</a>
+							<!--end::Logo-->
+							<!--begin::Text-->
+							<div class="text-sm-end fw-semibold fs-4 text-muted mt-7">
+								<div>Cecilia Chapman, 711-2880 Nulla St, Mankato</div>
+								<div>Mississippi 96522</div>
+							</div>
+							<!--end::Text-->
+						</div>
+					</div>
+					<div class="border-bottom w-100 my-7 my-lg-16"></div>
+						<!--begin::Invoice To-->
+						<div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
+							<!-- Invoice To -->
+							<div class="me-10">
+								<div class="text-gray-600 fs-6 fw-semibold mb-2">INVOICE TO.</div>
+								<div class="fs-6 text-gray-800 fw-semibold">{{ invoices.patient }}</div>
+							</div>
+						
+							<!-- Invoice No -->
+							<div class="me-10">
+								<div class="text-sm-end text-gray-600 fs-6 fw-semibold mb-2">INVOICE NO.</div>
+								<div class="fs-6 text-gray-800 fw-semibold">{{ invoices.invoice_number}}</div>
+							</div>
+						
+							<!-- Invoice Date -->
+							<div>
+								<div class="text-gray-600 fs-6 fw-semibold mb-2">DATE</div>
+								<div class="fs-6 text-gray-800 fw-semibold">{{ invoices.invoice_date|date:"F j, Y" }}</div>
+							</div>
+						</div>
+																	
+					<div class="border-bottom w-100 my-7 my-lg-16"></div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="border-bottom pb-12">
+						<!--begin::Image-->
+						
+						<!--end::Image-->
+						<!--begin::Wrapper-->
+						<div class="d-flex justify-content-between flex-column flex-md-row">
+							<!--begin::Content-->
+							<div class="flex-grow-1 pt-8 mb-13">
+								<!--begin::Table-->
+								<div class="table-responsive border-bottom mb-14">
+									<table class="table">
+										<thead>
+											<tr class="border-bottom fs-6 fw-bold text-muted text-uppercase">
+												<th class="min-w-175px pb-9">Description</th>
+												<th class="min-w-70px pb-9 text-end">QTY</th>
+												<th class="min-w-80px pb-9 text-end">Rate</th>
+												<th class="min-w-100px pe-lg-6 pb-9 text-end">Amount</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for a in items %}
+											<tr class="fw-bold text-gray-700 fs-5 text-end">
+												<td class="d-flex align-items-center pt-11">
+													{{ a.item.treatment }}
+												</td>
+												<td class="pt-11">{{ a.item.qty }}</td>
+												<td class="pt-11">${{ a.item.price }}</td>
+												<td class="pt-11 fs-5 pe-lg-6 text-gray-900 fw-bolder">${{ a.total }}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+										<footer>
+											
+											<tr class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700">
+												<th colspan="1" class="border-bottom border-bottom-dashed ps-0">
+													<div class="d-flex flex-column align-items-start">
+														<th colspan="2" class="fs-3 ps-0">TOTAL AMOUNT</th>
+														<th colspan="2" class="text-end fs-4 text-nowrap fs-xl-2x fs-2 fw-bolder">$
+														<span data-kt-element="grand-total">{{ invoices.total_sum }}</span></th>
+													</div>
+												</th>
+											</tr>
+											
+										</footer>
+									</table>
+								</div>
+								<!--end::Table-->
+								<!--begin::Section-->
+								
+								<!--end::Section-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Wrapper-->
+					</div>
+					<!--end::Body-->
+					<!-- begin::Footer-->
+					<div class="d-flex flex-stack flex-wrap mt-lg-20 pt-13">
+						<!-- begin::Actions-->
+						<div class="my-1 me-5">
+							<!-- begin::Pint-->
+							<button type="button" class="btn btn-success my-1 me-12" onclick="window.print();">Print Invoice</button>
+							<!-- end::Pint-->
+							<!-- begin::Download-->
+							<button type="button" class="btn btn-light-success my-1">Download</button>
+							<!-- end::Download-->
+						</div>
+						<!-- end::Actions-->
+						<!-- begin::Action-->
+						<button type="button" class="btn btn-primary my-1">Create Invoice</button>
+						<!-- end::Action-->
+					</div>
+					<!-- end::Footer-->
+				</div>
+				<!-- end::Wrapper-->
+			</div>
+			<!-- end::Body-->
+		</div>
+		<!-- end::Invoice 1-->
+	</div>
+	<!--end::Content container-->
+</div>
+{% endblock %}

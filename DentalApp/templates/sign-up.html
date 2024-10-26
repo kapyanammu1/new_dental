@@ -1,0 +1,151 @@
+{% extends 'sign-in.html' %}
+{% load static %}
+{% block content %}
+<div class="w-lg-500px p-10">
+	<!--begin::Form-->
+	<form method="post" enctype="multipart/form-data" class="form w-100" id="kt_sign_up_form">
+		<!--begin::Heading-->
+		{% csrf_token %}
+		<div class="text-center mb-11">
+			<!--begin::Title-->
+			<h1 class="text-gray-900 fw-bolder mb-3">Sign Up</h1>
+			<!--end::Title-->
+			<!--begin::Subtitle-->
+			<div class="text-gray-500 fw-semibold fs-6">Profile Info</div>
+			<!--end::Subtitle=-->
+		</div>
+		<!--begin::Heading-->
+		<!--begin::Login options-->
+		<div class="row g-3 mb-9">
+			<!--begin::Col-->
+			<div class="col-md-12">
+				{{ patient_form.image }}
+			</div>
+			<div class="col-md-6">
+				<div class="mb-3">
+					<div class="form-floating mb-7">
+						{{ patient_form.first_name }}
+						<label for="id_first_name">First Name</label>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="form-floating mb-7">
+						{{ patient_form.gender }}
+						<label for="id_gender">Gender</label>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="form-floating mb-7">
+						{{ patient_form.email }}
+						<label for="id_email">Email</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="mb-3">
+					<div class="form-floating mb-7">
+						{{ patient_form.last_name }}
+						<label for="id_last_name">Last Name</label>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="form-floating mb-7">
+						{{ patient_form.date_of_birth }}
+						<label for="id_date_of_birth">Date of Birth</label>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="form-floating mb-7">
+						{{ patient_form.contact_number }}
+						<label for="id_contact_number">Contact No.</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-floating mb-7">
+					{{ patient_form.address }}
+					<label for="id_address">Address</label>
+					<!--end::Email-->
+				</div>	
+			</div>
+			<!--end::Col-->
+		</div>
+		<!--end::Login options-->
+		<!--begin::Separator-->
+		<div class="separator separator-content my-7">
+			<span class="w-125px text-gray-500 fw-semibold fs-7">User Account</span>
+		</div>
+		<!--end::Separator-->
+		<div class="form-floating mb-7">
+			{{ signup_form.username }}
+			<label for="id_username">Username</label>
+			<!--end::Email-->
+		</div>
+		<!--begin::Input group-->
+		<div class="fv-row mb-8" data-kt-password-meter="true">
+			<!--begin::Wrapper-->
+			<div class="mb-1">
+				<!--begin::Input wrapper-->
+				<div class="form-floating mb-7">
+					<!-- <input class="form-control bg-transparent" type="password" placeholder="Password" name="password" autocomplete="off" /> -->
+					{{ signup_form.password1 }}
+					<label for="id_password1">Password</label>
+					<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+						<i class="ki-duotone ki-eye-slash fs-2"></i>
+						<i class="ki-duotone ki-eye fs-2 d-none"></i>
+					</span>
+				</div>
+				<!--end::Input wrapper-->
+				<!--begin::Meter-->
+				<div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
+					<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+					<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+					<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+					<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"></div>
+				</div>
+				<!--end::Meter-->
+			</div>
+			<!--end::Wrapper-->
+			<!--begin::Hint-->
+			<div class="text-muted">Use 8 or more characters with a mix of letters, numbers & symbols.</div>
+			<!--end::Hint-->
+		</div>
+		<!--end::Input group=-->
+		<!--end::Input group=-->
+		<div class="form-floating mb-7">
+			<!--begin::Repeat Password-->
+			<!-- <input placeholder="Repeat Password" name="confirm-password" type="password" autocomplete="off" class="form-control bg-transparent" /> -->
+			{{ signup_form.password2 }}
+			<label for="id_password2">Confirm Password</label>
+			<!--end::Repeat Password-->
+		</div>
+		{% if error %}
+			<p>{{ error }}</p>
+		{% endif %}
+		<!--end::Input group=-->
+		<!--begin::Submit button-->
+		<div class="d-grid mb-10">
+			<button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
+				<!--begin::Indicator label-->
+				<span class="indicator-label">Sign up</span>
+				<!--end::Indicator label-->
+				<!--begin::Indicator progress-->
+				<span class="indicator-progress">Please wait... 
+				<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+				<!--end::Indicator progress-->
+			</button>
+		</div>
+		<!--end::Submit button-->
+		<!--begin::Sign up-->
+		<div class="text-gray-500 text-center fw-semibold fs-6">Already have an Account? 
+		<a href="{% url 'login' %}" class="link-primary fw-semibold">Sign in</a></div>
+		<!--end::Sign up-->
+	</form>
+	<!--end::Form-->
+</div>
+{% endblock %}
+{% block additional %}
+	<script src="{% static 'assets/js/custom/authentication/sign-up/general.js' %}"></script>
+{% endblock %}

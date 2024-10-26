@@ -1,0 +1,20 @@
+{% extends 'sign-in.html' %}
+{% load static %}
+{% block content %}
+<div class="w-lg-500px p-10">
+	<!--begin::Form-->
+	<form method="post">
+		{% csrf_token %}
+		<label for="confirmation_code">Enter your confirmation code:</label>
+		<input type="text" name="confirmation_code" required>
+		<button type="submit">Confirm</button>
+	</form>
+	{% if error %}
+		<p>{{ error }}</p>
+	{% endif %}
+	<!--end::Form-->
+</div>
+{% endblock %}
+{% block additional %}
+	<script src="{% static 'assets/js/custom/authentication/sign-up/general.js' %}"></script>
+{% endblock %}

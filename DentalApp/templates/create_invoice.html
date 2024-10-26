@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+		<!--begin::Toolbar container-->
+		<div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+			<!--begin::Page title-->
+			<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+				<!--begin::Title-->
+				<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Invoice</h1>
+				<!--end::Title-->
+				<!--begin::Breadcrumb-->
+				<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">
+						<a href="{% url 'index' %}" class="text-muted text-hover-primary">Home</a>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item">
+						<span class="bullet bg-gray-500 w-5px h-2px"></span>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">Create Invoice</li>
+					<!--end::Item-->
+				</ul>
+				<!--end::Breadcrumb-->
+			</div>
+			<!--end::Page title-->
+		</div>
+		<!--end::Toolbar container-->
+	</div>
+	<!--end::Toolbar-->
+	<!--begin::Content-->
+	<div id="kt_app_content" class="app-content flex-column-fluid">
+		<!--begin::Content container-->
+		<div id="kt_app_content_container" class="app-container container-xxl">
+			<!--begin::Layout-->
+			<div class="d-flex flex-column flex-lg-row">
+				<!--begin::Content-->
+				<div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
+					<!--begin::Card-->
+					<div class="card">
+						<!--begin::Card body-->
+						<div class="card-body p-12">
+							<!--begin::Form-->
+							<form method="post" enctype="multipart/form-data" id="kt_invoice_form">
+								<!--begin::Wrapper-->
+								{% csrf_token %}
+								{{ invoice_form.errors }}
+								{% if invoice_form.errors %}
+									{% for error in invoice_form.errors %}
+										<p class="text-danger">{{ error }}</p>
+									{% endfor %}
+								{% endif %}
+								<div class="d-flex flex-column align-items-start flex-xxl-row">
+									<!--begin::Input group-->
+									<div class="d-flex align-items-center flex-equal fw-row me-4 order-2" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Select Patient">
+										<div class="fs-6 fw-bold text-gray-700 text-nowrap">Patient Name:</div>
+										<div class="position-relative d-flex align-items-center w-450px">
+											<!-- <input type="text" class="form-control form-control-solid" placeholder="Name" /> -->
+											 {{ invoice_form.patient }}
+										</div>
+									</div>
+									<!--end::Input group-->
+									<!--begin::Input group-->
+									<div class="d-flex flex-center flex-equal fw-row text-nowrap order-1 order-xxl-2 me-4" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Enter invoice number">
+										<span class="fs-2x fw-bold text-gray-800">Invoice #</span>
+										<!-- <input type="text" class="form-control form-control-flush fw-bold text-muted fs-3 w-125px" value="2021001" placehoder="..." /> -->
+										{{ invoice_form.invoice_number }}
+									</div>
+									
+									<!--end::Input group-->
+								</div>
+								<!--begin::Separator-->
+								<div class="separator separator-dashed my-10"></div>
+								<!--end::Separator-->
+								<!--begin::Wrapper-->
+								<div class="mb-0">
+									{% if invoice_items_formset.errors %}
+										{% for error in invoice_items_formset.errors %}
+											<p class="text-danger">{{ error }}</p>
+										{% endfor %}
+									{% endif %}
+									<!--begin::Table wrapper-->
+									<div class="table-responsive mb-10">
+										<!--begin::Table-->
+										{{ invoice_items_formset.management_form }}
+										<table class="table g-5 gs-0 mb-0 fw-bold text-gray-700" data-kt-element="items">
+											<!--begin::Table head-->
+											<thead>
+												<tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
+													<th class="min-w-300px w-475px">Item</th>
+													<th class="min-w-100px w-100px">QTY</th>
+													<th class="min-w-150px w-150px">Price</th>
+													<th class="min-w-100px w-150px text-end">Total</th>
+													<th class="min-w-75px w-75px text-end">Action</th>
+												</tr>
+											</thead>
+											<!--end::Table head-->
+											<!--begin::Table body-->
+											<tbody id="item-rows">
+												{% for form in invoice_items_formset %}
+												{{ form.id }}
+												<div class="d-none">{{ form.DELETE }}</div>
+													
+												<tr class="border-bottom border-bottom-dashed item-row" data-kt-element="item">
+													
+													<td class="pe-7">
+														{{ form.treatment }}
+													</td>
+													<td class="ps-0">
+														{{ form.qty }}
+													</td>
+													<td>
+														{{ form.price }}
+													</td>
+													<td class="pt-8 text-end text-nowrap">₱
+													<span data-kt-element="total">0.00</span></td>
+													<td class="pt-5 text-end">
+														<button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item">
+															<i class="ki-duotone ki-trash fs-3">
+																<span class="path1"></span>
+																<span class="path2"></span>
+																<span class="path3"></span>
+																<span class="path4"></span>
+																<span class="path5"></span>
+															</i>
+														</button>
+													</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+											<!--end::Table body-->
+											<!--begin::Table foot-->
+											<tfoot>
+												<tr class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700">
+													<th class="text-primary">
+														<button class="btn btn-link py-1" data-kt-element="add-item" id="add-item">Add item</button>
+													</th>
+													<th colspan="1" class="border-bottom border-bottom-dashed ps-0">
+														<div class="d-flex flex-column align-items-start">
+															<th colspan="2" class="fs-4 ps-0">Total</th>
+															<th colspan="2" class="text-end fs-4 text-nowrap">₱
+															<span data-kt-element="grand-total">0.00</span></th>
+															<span class="d-none" data-kt-element="sub-total">0.00</span>
+														</div>
+													</th>
+														
+												</tr>
+											</tfoot>
+											<!--end::Table foot-->
+										</table>
+									</div>
+									<!--end::Table-->
+									
+									<!--begin::Notes-->
+									<div class="mb-0">
+										<label class="form-label fs-6 fw-bold text-gray-700">Notes</label>
+										<!-- <textarea name="notes" class="form-control form-control-solid" rows="3" placeholder="Thanks for your business"></textarea> -->
+										{{ invoice_form.remarks }}
+									</div>
+									<div class="mb-0">
+										<button type="submit" class="btn btn-primary">Save</button>
+									</div>
+									
+									<!--end::Notes-->
+								</div>
+								<!--end::Wrapper-->
+							</form>
+							<!--end::Form-->
+						</div>
+						<!--end::Card body-->
+					</div>
+					<!--end::Card-->
+				</div>
+				<!--end::Content-->
+			</div>
+			<!--end::Layout-->
+		</div>
+		<!--end::Content container-->
+	</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'assets/js/custom/apps/invoices/create.js' %}"></script>
+{% endblock %}
