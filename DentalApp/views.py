@@ -37,6 +37,7 @@ User = get_user_model()
 
 def display_clinic_info(request):
     try:
+        print("display_clinic_info")
         with transaction.atomic():
             clinic, created = Clinic_Info.objects.get_or_create(
                 pk=1,  # Assuming you want only one clinic info
@@ -876,18 +877,54 @@ def User_Profile(request, pk):
     
     return render(request, 'Patientdetails.html', context)
 
-@login_required
+
+# def ClinicInfo(request):
+#     info = Clinic_Info.objects.all()
+
+#     if info.count() > 0:
+#         current_Info = info.first()
+#     else:
+#         current_Info = None
+
+#     form = ClinicForm(request.POST, request.FILES, instance=current_Info)
+#     if request.method == 'POST':
+#         if form.is_valid:
+#             form.save()
+#             return redirect(request.path_info)
+#     else:
+#         form = ClinicForm(instance=current_Info)
+
+#     context = {
+#         'form': form,
+#         'current_Info': current_Info
+#     }
+    
+#     return render(request, 'ClinicInfo.html', context)
+
+from django.db import transaction
+from django.shortcuts import render, redirect
+from .forms import ClinicForm
+from .models import Clinic_Info
+
 def ClinicInfo(request):
-    info = Clinic_Info.objects.all()
+    # Try to get the first Clinic_Info object, or create a default one if it doesn't exist
+    with transaction.atomic():
+        current_Info, created = Clinic_Info.objects.get_or_create(
+            pk=1,  # Assuming you want only one clinic info
+            defaults={
+                'clinic_name': 'Default Clinic Name',
+                'clinic_address': 'Default Clinic Address',
+                'contact_no': 'Default Contact Number',
+                'email': 'default@example.com',
+                'facebook': 'Default Facebook URL',
+                'open_hours': 'Default Open Hours',
+                'logo': 'default.jpg',
+            }
+        )
 
-    if info.count() > 0:
-        current_Info = info.first()
-    else:
-        current_Info = None
-
-    form = ClinicForm(request.POST, request.FILES, instance=current_Info)
     if request.method == 'POST':
-        if form.is_valid:
+        form = ClinicForm(request.POST, request.FILES, instance=current_Info)
+        if form.is_valid():  # Note: form.is_valid is a method, so we need to call it
             form.save()
             return redirect(request.path_info)
     else:
