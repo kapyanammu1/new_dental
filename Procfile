@@ -1,1 +1,1 @@
-echo "web: gunicorn DentalClinic.wsgi" > Procfile
+web: gunicorn DentalClinic.wsgi
