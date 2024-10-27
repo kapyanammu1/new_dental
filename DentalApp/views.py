@@ -42,7 +42,12 @@ def display_clinic_info(request):
                 pk=1,  # Assuming you want only one clinic info
                 defaults={
                     'clinic_name': 'Default Clinic Name',
-                    # Add other default fields here
+                    'clinic_address': 'Default Clinic Address',
+                    'contact_no': 'Default Contact Number',
+                    'email': 'default@example.com',
+                    'facebook': 'Default Facebook URL',
+                    'open_hours': 'Default Open Hours',
+                    'logo': 'default.jpg',
                 }
             )
         
