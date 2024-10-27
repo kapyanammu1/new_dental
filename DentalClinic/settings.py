@@ -166,7 +166,7 @@ WSGI_APPLICATION = 'DentalClinic.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbDCMS',
+        'NAME': 'dbdcms',
         'USER': 'dentaluser',
         'PASSWORD': 'dentalPassword',
         'HOST': 'localhost',
