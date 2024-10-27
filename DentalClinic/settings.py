@@ -87,9 +87,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
+    "http://ec2-52-91-47-250.compute-1.amazonaws.com",
+    "http://52.91.47.250",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 CHANNEL_LAYERS = {
     "default": {
