@@ -67,19 +67,19 @@ WSGI_APPLICATION = 'DentalClinic.wsgi.application'
 ASGI_APPLICATION = 'DentalClinic.asgi.application'
 
 # Database
-# DATABASES = {
-#     'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbDCMS',
-        'USER': 'postgres',
-        'PASSWORD': 'kapyanammuPassword',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'dbDCMS',
+#         'USER': 'postgres',
+#         'PASSWORD': 'kapyanammuPassword',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
