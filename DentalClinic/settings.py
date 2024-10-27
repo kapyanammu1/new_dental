@@ -168,7 +168,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dbdcms',
-        'USER': 'postgres',
+        'USER': 'dentaluser',
         'PASSWORD': 'dentalPassword',
         'HOST': 'localhost',
         'PORT': '5432',
