@@ -371,7 +371,7 @@ def signIn(request):
         
         if user is not None:
             # Check if the user is associated with a Dentist or Staff
-            if Dentist.objects.filter(user_account=user).exists() or Staff.objects.filter(user_account=user).exists():
+            if user.is_superuser or Dentist.objects.filter(user_account=user).exists() or Staff.objects.filter(user_account=user).exists():
                 login(request, user)
                 return redirect('index')  # or wherever you want to redirect after login
             else:
