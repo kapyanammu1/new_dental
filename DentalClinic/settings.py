@@ -125,6 +125,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
                 'DentalApp.context_processors.display_clinic_info',
+                'DentalApp.context_processors.display_user_details',
             ],
         },
     },
@@ -167,12 +168,23 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dbdcms',
-        'USER': 'dentaluser',
+        'USER': 'postgres',
         'PASSWORD': 'dentalPassword',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'dbDCMS',
+#         'USER': 'postgres',
+#         'PASSWORD': 'kapyanammuPassword',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

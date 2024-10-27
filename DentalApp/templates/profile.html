@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab">
+                <i class="fas fa-user me-2"></i>Profile
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">
+                <i class="fas fa-lock me-2"></i>Account Settings
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Contents -->
+    <div class="tab-content" id="profileTabsContent">
+        <!-- Profile Tab -->
+        <div class="tab-pane fade show active" id="profile" role="tabpanel">
+            <!-- Profile Header -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center position-relative">
+                        <!-- Profile Image -->
+                        <div class="position-relative me-4">
+                            {% if user_details.image %}
+                                <img src="{{ user_details.image.url }}" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+                            {% else %}
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                                    <i class="fas fa-user-md text-white" style="font-size: 3rem;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Name and Role -->
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h2 class="mb-1">{{ user_details.name }}</h2>
+                                    <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill">
+                                        {% if request.user.is_staff %}Staff{% else %}Dentist{% endif %}
+                                    </span>
+                                </div>
+                                {% if request.user.is_staff %}
+                                    <button type="button" class="btn btn-primary edit-btn" 
+                                        data-id="{{ user_details.pk }}"
+                                        data-url="/get-staff-form/" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#edit_modal" 
+                                        id="btn-showModal">Edit Staff</button>
+                                {% else %}
+                                    <button type="button" class="btn btn-primary edit-btn" 
+                                        data-id="{{ user_details.pk }}"
+                                        data-url="/get-dentist-form/" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#edit_modal" 
+                                        id="btn-showModal">Edit Dentist</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-4">
+                    <h3 class="card-title mb-0 fs-2">Contact Information</h3>
+                </div>
+                <div class="card-body py-4">
+                    <div class="row g-4">
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-envelope text-primary fa-2x me-4"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted mb-1 fs-6">Email</div>
+                                    <div class="fw-medium fs-5">{{ user_details.email }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Number -->
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-phone text-primary fa-2x me-4"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted mb-1 fs-6">Contact Number</div>
+                                    <div class="fw-medium fs-5">{{ user_details.contact_no }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-venus-mars text-primary fa-2x me-4"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted mb-1 fs-6">Gender</div>
+                                    <div class="fw-medium fs-5">{{ user_details.gender }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 bg-light rounded-3 h-100">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt text-primary fa-2x me-4"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted mb-1 fs-6">Address</div>
+                                    <div class="fw-medium fs-5">{{ user_details.address }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Settings Tab -->
+        <div class="tab-pane fade" id="account" role="tabpanel">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h4 class="card-title mb-0">Account Settings</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'update_account' %}">
+                        {% csrf_token %}
+                        <!-- Username Section -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Change Username</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Current Username</label>
+                                    <input type="text" class="form-control" value="{{ request.user.username }}" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">New Username</label>
+                                    <input type="text" name="new_username" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Password Section -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Change Password</h5>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Current Password</label>
+                                    <input type="password" name="current_password" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">New Password</label>
+                                    <input type="password" name="new_password" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Confirm New Password</label>
+                                    <input type="password" name="confirm_password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Security Section -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Account Security</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-envelope text-primary me-2"></i>
+                                        <span>Email: {{ user_details.email }}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-shield-alt text-primary me-2"></i>
+                                        <span>Last login: {{ request.user.last_login|date:"F j, Y, g:i a" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit_modal" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+            
+			<div class="modal-dialog modal-dialog-centered mw-650px">
+				<!--begin::Modal content-->
+				<div class="modal-content">
+					<!--begin::Form-->
+					<form class="form" method="post" enctype="multipart/form-data" id="edit_form">
+						<!--begin::Modal header-->
+                        <input type="hidden" name="id" id="id">
+						<div class="modal-header" id="kt_modal_add_customer_header">
+							<!--begin::Modal title-->
+							<h2 class="fw-bold">Edit Form</h2>
+							<!--end::Modal title-->
+							<!--begin::Close-->
+							<div id="btn-close" class="btn btn-icon btn-sm btn-active-icon-primary">
+								<i class="ki-duotone ki-cross fs-1">
+									<span class="path1"></span>
+									<span class="path2"></span>
+								</i>
+							</div>
+							<!--end::Close-->
+						</div>
+						<!--end::Modal header-->
+						<!--begin::Modal body-->
+						<div class="modal-body py-10 px-lg-17">
+							{% csrf_token %}
+							<!--begin::Scroll-->
+							
+							<div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
+								<div id="modal-form-body">
+									
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer flex-center">
+							<button type="reset" id="btn-cancel" class="btn btn-light me-3">Discard</button>
+                            {% if request.user.is_staff %}
+                                <button type="submit" id="btn-submit" class="btn btn-primary" data-url="/Staff_list/">
+                                    <span class="indicator-label">Submit</span>
+                                    <span class="indicator-progress">Please wait... 
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                </button>
+                            {% else %}
+                                <button type="submit" id="btn-submit" class="btn btn-primary" data-url="/Dentist_list/">
+                                    <span class="indicator-label">Submit</span>
+                                    <span class="indicator-progress">Please wait... 
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                </button>
+                            {% endif %}
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'assets/js/custom/apps/customers/add.js' %}"></script>
+<script src="{% static 'assets/js/custom/modal.js' %}"></script>
+<script>
+	KTUtil.onDOMContentLoaded(function() {
+		CustomerModalForm.init("edit_modal", "edit_form");
+	});
+</script>
+{% endblock %}

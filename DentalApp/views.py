@@ -458,6 +458,52 @@ def confirm_signup(request):
     return render(request, 'Confirmation.html')
 
 @login_required
+def update_account(request):
+    if request.method == 'POST':
+        # Handle username change
+        new_username = request.POST.get('new_username')
+        if new_username and new_username != request.user.username:
+            if User.objects.filter(username=new_username).exists():
+                messages.error(request, 'Username already exists.')
+            else:
+                request.user.username = new_username
+                request.user.save()
+                messages.success(request, 'Username updated successfully.')
+
+        # Handle password change
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        if current_password and new_password and confirm_password:
+            if new_password != confirm_password:
+                messages.error(request, 'New passwords do not match.')
+            elif not request.user.check_password(current_password):
+                messages.error(request, 'Current password is incorrect.')
+            else:
+                request.user.set_password(new_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)  # Keep user logged in
+                messages.success(request, 'Password updated successfully.')
+
+        return redirect('profile')
+
+    return redirect('profile')
+
+@login_required
+def profile_view(request):
+    if request.user.is_dentist:
+        user_details = Dentist.objects.get(user_account=request.user)
+    elif request.user.is_staff:
+        user_details = Staff.objects.get(user_account=request.user)
+    else:
+        return redirect('home')  # or wherever you want to redirect unauthorized users
+        
+    return render(request, 'profile.html', {
+        'user_details': user_details,
+    })
+
+@login_required
 def dashboard(request):
     now = timezone.now()
     start_of_week = now - timedelta(days=now.weekday())
@@ -762,24 +808,6 @@ def staffs(request):
         additional_context=additional_context
     )
 
-# @login_required
-# def Users(request):  
-#     user = CustomUser.objects.all()
-#     id = request.POST.get('id')
-#     if id:
-#         inst = get_object_or_404(Dentist, pk=id)
-#     else:
-#         inst = None
-#     additional_context = {'dentist': dentist}
-#     return Add(
-#         request,
-#         instance=inst,
-#         form_class=DentistForm, 
-#         template='dentist.html',
-#         redirect_to=request.path_info,
-#         additional_context=additional_context
-#     )
-
 @login_required
 def patients(request): 
     patient= Patient.objects.all() 
@@ -876,35 +904,6 @@ def User_Profile(request, pk):
                }
     
     return render(request, 'Patientdetails.html', context)
-
-
-# def ClinicInfo(request):
-#     info = Clinic_Info.objects.all()
-
-#     if info.count() > 0:
-#         current_Info = info.first()
-#     else:
-#         current_Info = None
-
-#     form = ClinicForm(request.POST, request.FILES, instance=current_Info)
-#     if request.method == 'POST':
-#         if form.is_valid:
-#             form.save()
-#             return redirect(request.path_info)
-#     else:
-#         form = ClinicForm(instance=current_Info)
-
-#     context = {
-#         'form': form,
-#         'current_Info': current_Info
-#     }
-    
-#     return render(request, 'ClinicInfo.html', context)
-
-from django.db import transaction
-from django.shortcuts import render, redirect
-from .forms import ClinicForm
-from .models import Clinic_Info
 
 def ClinicInfo(request):
     # Try to get the first Clinic_Info object, or create a default one if it doesn't exist

@@ -58,7 +58,11 @@
 							<div class="text-sm-end">
 								<!--begin::Logo-->
 								<a href="#" class="d-block mw-150px ms-sm-auto">
-									<img alt="Logo" src="{% static 'assets/media/svg/brand-logos/lloyds-of-london-logo.svg' %}" class="w-100" />
+									{% if clinic_info.logo %}
+										<img alt="Logo" src="{{ clinic_info.logo }}" class="w-50" />
+									{% else %}
+										<img alt="Logo" src="" class="w-100" />
+									{% endif %}
 								</a>
 								<!--end::Logo-->
 								<!--begin::Text-->
