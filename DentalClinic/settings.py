@@ -93,6 +93,14 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 CHANNEL_LAYERS = {
     "default": {
