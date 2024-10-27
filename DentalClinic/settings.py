@@ -167,8 +167,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dbDCMS',
-        'USER': 'postgres',
-        'PASSWORD': 'kapyanammuPassword',
+        'USER': 'dentaluser',
+        'PASSWORD': 'dentalPassword',
         'HOST': 'localhost',
         'PORT': '5432',
     }
