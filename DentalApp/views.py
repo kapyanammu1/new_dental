@@ -31,12 +31,21 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import calendar
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.db import transaction
 
 User = get_user_model()
 
 def display_clinic_info(request):
     try:
-        clinic = Clinic_Info.objects.first()  # Assuming you have only one clinic
+        with transaction.atomic():
+            clinic, created = Clinic_Info.objects.get_or_create(
+                pk=1,  # Assuming you want only one clinic info
+                defaults={
+                    'clinic_name': 'Default Clinic Name',
+                    # Add other default fields here
+                }
+            )
+        
         return {
             'clinic_info': {
                 'name': clinic.clinic_name,
@@ -44,7 +53,8 @@ def display_clinic_info(request):
                 # Add other clinic fields as needed
             }
         }
-    except Clinic_Info.DoesNotExist:
+    except Exception as e:
+        print(f"Error in display_clinic_info: {e}")
         return {'clinic_info': None}
 
 # class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
