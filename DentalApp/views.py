@@ -113,7 +113,9 @@ def confirm_email(request, token):
     except (BadSignature, User.DoesNotExist):
         return HttpResponse("Invalid confirmation link.", status=400)
 
+@api_view(['POST'])
 def contact_view(request):
+    permission_classes = []
     try:
         # Get form data
         name = request.data.get('name')
