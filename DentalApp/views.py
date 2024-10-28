@@ -113,6 +113,41 @@ def confirm_email(request, token):
     except (BadSignature, User.DoesNotExist):
         return HttpResponse("Invalid confirmation link.", status=400)
 
+def contact_view(request):
+    try:
+        # Get form data
+        name = request.data.get('name')
+        email = request.data.get('email')
+        subject = request.data.get('subject')
+        message = request.data.get('message')
+
+        # Compose email
+        email_message = f"""
+        New contact form submission:
+        
+        Name: {name}
+        Email: {email}
+        Subject: {subject}
+        Message: {message}
+        """
+
+        # Send email
+        send_mail(
+            subject=f'Contact Form: {subject}',
+            message=email_message,
+            from_email=email,
+            recipient_list=['your-email@example.com'],
+            fail_silently=False,
+        )
+
+        return Response({'message': 'Message sent successfully'})
+
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to send message'},
+            status=500
+        )
+
 class DentistAPIView(APIView):
     permission_classes = []
 

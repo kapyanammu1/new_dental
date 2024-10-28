@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('confirm-email/<str:token>/', views.confirm_email, name='confirm-email'),
+    path('api/contact/', views.contact_view, name='contact'),
     path('api/dentist/', views.DentistAPIView.as_view(), name='dentist-list'),
     path('api/patients/', views.PatientListAPIView.as_view(), name='patient-list'),
     path('api/signup/', views.SignupAPIView.as_view(), name='sign-up'),
