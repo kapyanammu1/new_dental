@@ -369,7 +369,7 @@ def unread_notif(request):
         if user.is_dentist:
             notifs = Notification.objects.filter(user=user, appointment__status='Pending')
         else:
-            notifs = Notification.objects.filter(appointment__status='Pending')
+            notifs = Notification.objects.filter(user=user, appointment__status='Pending')
             
         notif_data = []
         for notif in notifs:
