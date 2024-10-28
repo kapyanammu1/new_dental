@@ -136,7 +136,7 @@ def contact_view(request):
             subject=f'Contact Form: {subject}',
             message=email_message,
             from_email=email,
-            recipient_list=['your-email@example.com'],
+            recipient_list=[settings.EMAIL_HOST_USER],
             fail_silently=False,
         )
 
