@@ -32,7 +32,12 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-ALLOWED_HOSTS = ['ec2-52-91-47-250.compute-1.amazonaws.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'ec2-52-91-47-250.compute-1.amazonaws.com', 
+    '52.91.47.250', 
+    'localhost', 
+    '127.0.0.1'
+]
 # django_heroku.settings(locals())
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
