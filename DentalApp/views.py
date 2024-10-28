@@ -365,8 +365,9 @@ class AppointmentAPIView(APIView):
 def unread_notif(request):
     if request.method == 'GET':
         user = request.user
+        dentist = Dentist.objects.get(user_account=user)
         if user.is_dentist:
-            notifs = Notification.objects.filter(appointment__dentist=user.id, appointment__status='Pending')
+            notifs = Notification.objects.filter(appointment__dentist=dentist, appointment__status='Pending')
         else:
             notifs = Notification.objects.filter(appointment__status='Pending')
             
