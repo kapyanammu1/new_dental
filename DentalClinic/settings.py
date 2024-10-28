@@ -48,7 +48,7 @@ EMAIL_HOST_USER = 'dental.clinic1026@gmail.com'
 EMAIL_HOST_PASSWORD = 'khttiyyxnjydahsz'
 DEFAULT_FROM_EMAIL = 'dental.clinic1026@gmail.com'
 FRONTEND_URL = 'http://localhost:8080'
-BACKEND_URL = 'http://127.0.0.1:8000'
+BACKEND_URL = 'http://ec2-52-91-47-250.compute-1.amazonaws.com'
 
 
 
