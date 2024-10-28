@@ -18,7 +18,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             # self.group_name = f"user_{self.user_id}"  # Define the group name
 
             if self.user.is_staff:
-                self.group_name = f"user_{self.user_id}"
+                self.group_name = f"user_{self.user.id}"
             else:
                 # Assuming non-staff users are dentists
                 self.group_name = f"dentist_notifications_{self.user.id}"
