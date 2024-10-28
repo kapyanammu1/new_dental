@@ -32,6 +32,9 @@ from asgiref.sync import async_to_sync
 import calendar
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db import transaction
+import logging
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -291,6 +294,7 @@ class AppointmentAPIView(APIView):
             appointment = serializer.save(patient=patient, end_time=end_time.time())
             
             admin_user = User.objects.filter(is_staff=True)
+            dentist_user = User.objects.filter(is_dentist=True, dentist=appointment.dentist)
 
             for user in admin_user:
                 Notification.objects.create(
@@ -311,6 +315,37 @@ class AppointmentAPIView(APIView):
                         "timestamp": timezone.now().isoformat(),
                     }
                 )
+
+            
+            if appointment.dentist:
+                try:
+                    # Create notification for dentist
+                    Notification.objects.create(
+                        appointment=appointment,
+                        user=appointment.dentist.user_account,
+                        patient=patient,
+                        message=f"New appointment assigned to you from {patient.first_name} {patient.last_name}"
+                    )
+
+                    # Send real-time notification to dentist
+                    dentist_notification = {
+                        "type": "send_notification",
+                        'appointment_id': appointment.id,
+                        "message": f"New appointment: {patient.first_name} {patient.last_name}",
+                        "patient_image_url": patient.image.url if patient.image else '/static/assets/media/avatars/blank.png',
+                        "timestamp": timezone.now().isoformat(),
+                    }
+
+                    async_to_sync(channel_layer.group_send)(
+                        f"dentist_notifications_{appointment.dentist.user_account.id}",
+                        dentist_notification
+                    )
+
+                    logger.info(f"Notification sent successfully to dentist for appointment {appointment.id}")
+                except Exception as e:
+                    logger.error(f"Error sending notification to dentist: {str(e)}")
+
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -329,7 +364,11 @@ class AppointmentAPIView(APIView):
 @login_required
 def unread_notif(request):
     if request.method == 'GET':
-        notifs = Notification.objects.filter(appointment__status='Pending')
+        user = request.user
+        if user.is_dentist:
+            notifs = Notification.objects.filter(user=user, appointment__status='Pending')
+        else:
+            notifs = Notification.objects.filter(appointment__dentist=user.dentist, appointment__status='Pending')
         notif_data = []
         for notif in notifs:
             notif_data.append({

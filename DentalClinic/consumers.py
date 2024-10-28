@@ -14,9 +14,15 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         
         # Check if the user is authenticated
         if self.user.is_authenticated:
-            self.user_id = self.user.id  # Set user_id
-            self.group_name = f"user_{self.user_id}"  # Define the group name
+            # self.user_id = self.user.id  # Set user_id
+            # self.group_name = f"user_{self.user_id}"  # Define the group name
 
+            if self.user.is_staff:
+                self.group_name = f"user_{self.user_id}"
+            else:
+                # Assuming non-staff users are dentists
+                self.group_name = f"dentist_notifications_{self.user.id}"
+            
             # Join the group
             await self.channel_layer.group_add(
                 self.group_name,
@@ -24,7 +30,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             )
 
             await self.accept()  # Accept the WebSocket connection
-            logger.info(f"WebSocket connection accepted for user {self.user_id}")
+            # logger.info(f"WebSocket connection accepted for user {self.user_id}")
         else:
             logger.warning("User is not authenticated, closing WebSocket.")
             await self.close()  # Close the connection if the user is not authenticated
