@@ -33,8 +33,8 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 ALLOWED_HOSTS = [
-    'ec2-52-91-47-250.compute-1.amazonaws.com', 
-    '52.91.47.250', 
+    'ec2-44-204-79-164.compute-1.amazonaws.com', 
+    '44-204-79-164', 
     'localhost', 
     '127.0.0.1'
 ]
