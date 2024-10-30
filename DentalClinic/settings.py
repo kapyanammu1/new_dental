@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7r1ef&w-rsd@f@bw0xnqr&$t7wd-4hnd(l7fpryn31k@_u!_5h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 AUTH_USER_MODEL = 'DentalApp.CustomUser'
 
