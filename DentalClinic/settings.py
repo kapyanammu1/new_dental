@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7r1ef&w-rsd@f@bw0xnqr&$t7wd-4hnd(l7fpryn31k@_u!_5h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 AUTH_USER_MODEL = 'DentalApp.CustomUser'
 
@@ -190,27 +190,27 @@ WSGI_APPLICATION = 'DentalClinic.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbdcms',
-        'USER': 'dentaluser',
-        'PASSWORD': 'dentalPassword',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'dbDCMS',
-#         'USER': 'postgres',
-#         'PASSWORD': 'kapyanammuPassword',
+#         'NAME': 'dbdcms',
+#         'USER': 'dentaluser',
+#         'PASSWORD': 'dentalPassword',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dbDCMS',
+        'USER': 'postgres',
+        'PASSWORD': 'kapyanammuPassword',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

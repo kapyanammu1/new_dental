@@ -15,7 +15,8 @@
 		<meta property="og:url" content="https://keenthemes.com/keen" />
 		<meta property="og:site_name" content="Keen by Keenthemes" />
 		<link rel="canonical" href="https://preview.keenthemes.com/keen" />
-		<link rel="shortcut icon" href="media/logos/favicon.ico" />
+		<!-- <link rel="shortcut icon" href="media/logos/favicon.ico" /> -->
+		 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦷</text></svg>">
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -80,7 +81,7 @@
 
 				<!-- Right side (Login form) -->
 				<div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10" 
-					 style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/carousel-1.jpg');
+					 style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({% static 'assets/media/carousel-1.jpg' %});
 					 background-size: cover;
 					 background-position: center;
 					 min-height: 100vh;
@@ -145,7 +146,6 @@
 		<script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		{% block additional %}
 		<script src="{% static 'assets/js/custom/authentication/sign-in/general.js' %}"></script>
 	</body>
 	<!--end::Body-->
